@@ -86,20 +86,22 @@ class SheypoorAuth:
         Verifies the received OTP code and obtains the xTicket authentication token.
         """
         url = f"{BASE_URL}/auth/number-verification"
-        payload = {"token": token, "pin": pin}
+        payload = {"token": token, "mobilePIN": str(pin).strip()}
+
 
         try:
             r = requests.post(url, json=payload, headers=DEFAULT_HEADERS, timeout=12)
             data = r.json()
             if r.status_code == 200:
-                x_ticket = data.get("xTicket")
-                user_id = data.get("userId")
+                x_ticket = data.get("x-ticket") or data.get("xTicket") or data.get("token")
+                user_id = data.get("userID") or data.get("userId")
                 phone = data.get("mobileNumber") or self._phone
                 
                 self._token = x_ticket
                 self._user_id = user_id
                 self._phone = phone
                 self.save()
+
 
                 return {
                     "success": True,
