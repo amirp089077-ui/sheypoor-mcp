@@ -202,10 +202,23 @@ TOOLS: List[Dict[str, Any]] = [
         },
     },
     {
+        "name": "sheypoor_chat_send_message",
+        "description": "ارسال پیام در چت شیپور به فروشنده آگهی",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "listing_id": {"type": "string", "description": "شناسه آگهی"},
+                "message": {"type": "string", "description": "متن پیام"},
+            },
+            "required": ["listing_id", "message"],
+        },
+    },
+    {
         "name": "sheypoor_status",
         "description": "بررسی سلامت سرور Sheypoor MCP و نسخه API",
         "parameters": {"type": "object", "properties": {}},
     },
+
 ]
 
 
@@ -342,7 +355,11 @@ def execute_tool(name: str, arguments: Dict[str, Any]) -> Any:
     elif name == "sheypoor_chat_messages":
         return client.get_chat_messages(arguments["room_id"])
 
+    elif name == "sheypoor_chat_send_message":
+        return client.send_chat_message(arguments["listing_id"], arguments["message"])
+
     elif name == "sheypoor_status":
+
         auth_st = client.auth.get_status()
         return {
             "server": "Sheypoor MCP Server",

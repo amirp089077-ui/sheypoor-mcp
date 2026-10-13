@@ -250,3 +250,20 @@ class SheypoorClient:
                 return {"success": False, "error": f"خطا در دریافت پیام‌ها ({r.status_code})"}
         except Exception as e:
             return {"success": False, "error": str(e)}
+
+    def send_chat_message(self, listing_id: Union[int, str], message: str) -> Dict[str, Any]:
+        """
+        Sends a message to the seller of a listing.
+        """
+        url = f"{BASE_URL}/chat/message"
+        payload = {"listingId": str(listing_id), "message": message.strip()}
+        try:
+            r = self.session.post(url, json=payload, headers=self._get_headers(authenticated=True), timeout=12)
+            if r.status_code == 200:
+                return {"success": True, "message": "پیام با موفقیت ارسال شد", "result": r.json()}
+            else:
+                return {"success": False, "error": f"خطا در ارسال پیام ({r.status_code}): {r.text}"}
+        except Exception as e:
+            return {"success": False, "error": str(e)}
+
+
