@@ -1,0 +1,85 @@
+# Sheypoor MCP Server
+
+[![Model Context Protocol](https://img.shields.io/badge/MCP-Protocol%202024--11--05-blue.svg)](https://modelcontextprotocol.io/)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-green.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A high-performance, reverse-engineered Model Context Protocol (MCP) server for the **Sheypoor** classifieds platform (`شیپور`), extracted directly from the official Android APK v7.0.7.
+
+Allows AI assistants (like Claude, Gemini, Antigravity) to search ads across multiple cities simultaneously, fetch ad details, extract seller phone numbers, appraise market prices, find bargains/deals, and manage user accounts.
+
+---
+
+## 🌟 Features
+
+- **Multi-City Search**: Search across multiple Iranian cities simultaneously (e.g. `شاهرود`, `شیراز`, `تهران`, `سبزوار`).
+- **Direct Contact Retrieval**: Fetch real seller contact telephone numbers directly via Sheypoor's REST endpoints.
+- **Market Price Intelligence**: Instant statistics (min, max, average, median, quartiles) and deal detection (`sheypoor_find_deals`).
+- **Post Valuation & Appraisal**: Automated comparison of listings against live market values (`sheypoor_appraise_listing`).
+- **Full Iranian Geographic Index**: Offline resolution of 31 provinces and 2,200+ cities with fuzzy and Persian phonetic matching.
+- **Account & Bookmarks**: Full support for OTP login, token preservation, bookmarking, and user listings.
+- **Fast & Lightweight**: Zero heavy dependencies, pure Python JSON REST client with Retrofit-compatible headers.
+
+---
+
+## 🛠️ MCP Tools
+
+| Tool | Description |
+|---|---|
+| `sheypoor_search` | Search Sheypoor ads with multi-city support, categories, and price filters |
+| `sheypoor_get_listing` | Fetch full details, specs, images, and description of a listing |
+| `sheypoor_get_contact` | Fetch seller's direct phone number |
+| `sheypoor_similar_listings` | Discover similar / related ads for a given listing |
+| `sheypoor_price_analysis` | Market price analysis (average, median, range) |
+| `sheypoor_find_deals` | Hunt for underpriced listings (bargains / deals) |
+| `sheypoor_appraise_listing` | Appraise whether a listing is underpriced or overpriced |
+| `sheypoor_list_cities` | Browse and filter cities & provinces with Sheypoor IDs |
+| `sheypoor_list_categories` | Browse categories tree |
+| `sheypoor_status` | Server and API health check |
+| `sheypoor_auth_send_otp` | Request SMS login OTP |
+| `sheypoor_auth_verify_otp` | Verify SMS OTP and save session |
+| `sheypoor_auth_set_token` | Manually configure `xTicket` token |
+| `sheypoor_auth_status` | Check authentication status & profile |
+| `sheypoor_auth_logout` | Log out of user account |
+| `sheypoor_get_my_listings` | View user's own listings |
+| `sheypoor_get_my_bookmarks` | View saved / bookmarked ads |
+| `sheypoor_bookmark_listing` | Bookmark or unbookmark an ad |
+| `sheypoor_chat_conversations`| View user's chat conversations |
+| `sheypoor_chat_messages` | View messages in a chat conversation |
+
+---
+
+## 🚀 Installation & Usage
+
+### 1. Run via Python CLI
+```bash
+# Search for pickup trucks in Shiraz and Shahroud
+python -m sheypoor_mcp.cli search "پیکان وانت" --cities "شیراز,شاهرود"
+
+# Fetch post details
+python -m sheypoor_mcp.cli get 468031034
+
+# Get seller phone number
+python -m sheypoor_mcp.cli contact 468031034
+```
+
+### 2. Configure in Antigravity / Claude Desktop
+
+Add to your `mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "sheypoor": {
+      "command": "python",
+      "args": ["-m", "sheypoor_mcp.server"],
+      "cwd": "C:\\Users\\Administrator\\Desktop\\sheypoor"
+    }
+  }
+}
+```
+
+---
+
+## 📄 License
+MIT License.

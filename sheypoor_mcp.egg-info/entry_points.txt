@@ -1,0 +1,3 @@
+[console_scripts]
+sheypoor-cli = sheypoor_mcp.cli:main
+sheypoor-mcp = sheypoor_mcp.server:main
